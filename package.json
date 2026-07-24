@@ -1,0 +1,17 @@
+{
+  "name": "minimal-ivory-gold-nikkah",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build --base=./",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "gsap": "^3.15.0"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0"
+  }
+}
