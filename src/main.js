@@ -96,9 +96,9 @@ if (!reduceMotion) {
   $$('.image-parallax').forEach((element) => {
     gsap.fromTo(
       element,
-      { backgroundPosition: '50% 38%' },
+      { backgroundPosition: 'right 38%' },
       {
-        backgroundPosition: '50% 62%',
+        backgroundPosition: 'right 62%',
         ease: 'none',
         scrollTrigger: {
           trigger: element,
