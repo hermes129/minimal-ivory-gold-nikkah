@@ -1,6 +1,7 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './styles.css';
+import { initDateScratch } from './date-scratch.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,13 +13,45 @@ const opener = $('#opener');
 const openButton = $('#open-invitation');
 const hero = $('.hero');
 const mainContent = $('#main-content');
+const music = $('#site-music');
+const musicToggle = $('#music-toggle');
+const musicLabel = $('.music-toggle__label', musicToggle);
+
+if (music) music.volume = 0.26;
+
+function syncMusicControl() {
+  if (!music || !musicToggle) return;
+  const isPlaying = !music.paused;
+  musicToggle.setAttribute('aria-pressed', String(isPlaying));
+  musicToggle.setAttribute('aria-label', isPlaying ? 'Pause background music' : 'Play background music');
+  if (musicLabel) musicLabel.textContent = isPlaying ? 'Pause music' : 'Play music';
+}
+
+async function setMusicPlaying(shouldPlay) {
+  if (!music) return;
+  if (!shouldPlay) {
+    music.pause();
+    syncMusicControl();
+    return;
+  }
+
+  try {
+    await music.play();
+  } catch {
+    // The control remains available if a browser declines audio playback.
+  }
+  syncMusicControl();
+}
 
 document.body.classList.add('is-covered');
+initDateScratch();
 
 function revealInvitation() {
   if (!opener || opener.dataset.opened === 'true') return;
   opener.dataset.opened = 'true';
   openButton.disabled = true;
+  if (musicToggle) musicToggle.hidden = false;
+  setMusicPlaying(true);
 
   if (reduceMotion) {
     opener.hidden = true;
@@ -67,6 +100,9 @@ function revealInvitation() {
 }
 
 openButton?.addEventListener('click', revealInvitation);
+musicToggle?.addEventListener('click', () => setMusicPlaying(music?.paused ?? true));
+music?.addEventListener('play', syncMusicControl);
+music?.addEventListener('pause', syncMusicControl);
 
 $$('[data-scroll-to]').forEach((button) => {
   button.addEventListener('click', () => {

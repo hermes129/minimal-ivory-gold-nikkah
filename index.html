@@ -106,7 +106,16 @@
         <div class="ceremony__image image-parallax" role="img" aria-label="Nikkah signing details with jasmine and a Quran"></div>
         <div class="ceremony__card reveal">
           <p class="section-kicker">02 — The nikkah</p>
-          <h2 id="ceremony-title">Seventeenth<br /><em>of October.</em></h2>
+          <h2 id="ceremony-title">The <em>nikkah.</em></h2>
+          <div class="date-scratch date-scratch--nikkah" data-date-scratch data-scratch-key="nikkah-wedding-date" data-scratch-cover="#a8833d" data-scratch-accent="#f7f2e8">
+            <div class="date-scratch__stage">
+              <div class="date-scratch__value" tabindex="-1" aria-label="Nikkah date: 17 October 2026"><span>17</span><i>·</i><span>10</span><i>·</i><span>26</span></div>
+              <canvas class="date-scratch__canvas" aria-hidden="true"></canvas>
+              <p class="date-scratch__hint" aria-hidden="true">Scratch to reveal</p>
+            </div>
+            <button class="date-scratch__button" type="button">Reveal date</button>
+            <p class="sr-only" data-date-scratch-status aria-live="polite"></p>
+          </div>
           <div class="ceremony__details">
             <div>
               <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" /><path d="M12 7v5l3 2" /></svg>
@@ -247,6 +256,7 @@
           <button class="solid-button" id="open-rsvp" type="button">Respond to the invitation</button>
         </div>
         <p class="rsvp__signoff reveal">With love, <strong>Noor &amp; Zayn</strong></p>
+        <p class="music-credit reveal">Music: <a href="https://commons.wikimedia.org/wiki/File:RanjitMakkuniRagaKaushiKanra.ogg" target="_blank" rel="noreferrer">Kaushi Kanra by Ranjit Makkuni &amp; Akram Khan · CC BY-SA 3.0</a></p>
       </section>
     </main>
 
@@ -283,6 +293,13 @@
       <div class="confetti" id="confetti" aria-hidden="true"></div>
     </dialog>
 
+    <audio id="site-music" loop preload="auto">
+      <source src="./assets/raga-kaushi-kanra.ogg" type="audio/ogg" />
+    </audio>
+    <button class="music-toggle" id="music-toggle" type="button" aria-pressed="false" aria-label="Play background music" hidden>
+      <span class="music-toggle__icon" aria-hidden="true"><i></i><i></i></span>
+      <span class="music-toggle__label">Play music</span>
+    </button>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
