@@ -2,12 +2,17 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './styles.css';
 import { initDateScratch } from './date-scratch.js';
+import { initMotifs, initDraw } from './utils/draw.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Illustration layer, injected before anything measures the DOM.
+initMotifs();
+initDraw(reduceMotion);
 
 const opener = $('#opener');
 const openButton = $('#open-invitation');
@@ -60,19 +65,27 @@ function revealInvitation() {
     return;
   }
 
+  const finish = () => {
+    opener.hidden = true;
+    document.body.classList.remove('is-covered');
+    mainContent?.focus({ preventScroll: true });
+    ScrollTrigger.refresh();
+  };
+
+  if (playOpeningFilm(finish)) return;
+
   const timeline = gsap.timeline({
     defaults: { ease: 'power3.inOut' },
-    onComplete: () => {
-      opener.hidden = true;
-      document.body.classList.remove('is-covered');
-      mainContent?.focus({ preventScroll: true });
-      ScrollTrigger.refresh();
-    },
+    onComplete: finish,
   });
 
   timeline
     .to('.opener__content', { autoAlpha: 0, y: -36, duration: 0.55 })
     .to('.opener__hint', { autoAlpha: 0, y: 14, duration: 0.3 }, '<')
+    // .opener__ground is a direct child of .opener, so it does not travel
+    // with the parting panels — without this it hangs over the revealed
+    // hero until the timeline ends and the opener is hidden.
+    .to('.opener__ground', { autoAlpha: 0, duration: 0.5 }, '<')
     .to(
       '.opener__corner',
       {
@@ -97,6 +110,75 @@ function revealInvitation() {
       { autoAlpha: 1, y: 0, duration: 0.75, stagger: 0.09, ease: 'power2.out' },
       '-=.75',
     );
+}
+
+/* ── The opening film ──────────────────────────────────────────────────
+   Portrait viewports only. The source is 9:16; cover-cropping it onto a
+   wide screen would push the doors out of frame and upscale a 716px-wide
+   picture past 1400px, so landscape keeps the parting-panel gate.
+
+   The handoff is the whole point. The clip ends on flat white, so the
+   veil is snapped to full white slightly BEFORE the last frame — while
+   the picture is already white — and only then is the opener torn down.
+   Nothing can flash between the two, and the reveal is a white-to-hero
+   fade rather than the bright-to-dark cut the panels would give.
+
+   Returns true if it took over the reveal, false to fall back. */
+function playOpeningFilm(finish) {
+  const film = $('#opener-film');
+  const veil = $('#gate-veil');
+  if (!film || !veil) return false;
+
+  // Landscape and near-square viewports keep the panels.
+  if (window.innerHeight / window.innerWidth < 1.2) return false;
+  // Nothing buffered yet — don't stall the tap on a cold cache.
+  if (film.readyState < 2) return false;
+  if (!film.canPlayType('video/mp4; codecs="avc1.42E01E"') && !film.canPlayType('video/webm')) {
+    return false;
+  }
+
+  let handedOff = false;
+  const handOff = () => {
+    if (handedOff) return;
+    handedOff = true;
+    // Both are pure white, so this is invisible even though it is instant.
+    gsap.set(veil, { display: 'block', opacity: 1 });
+    finish();
+    gsap.to(veil, {
+      opacity: 0,
+      duration: 1.2,
+      ease: 'power2.inOut',
+      onComplete: () => gsap.set(veil, { display: 'none' }),
+    });
+    gsap.fromTo('.hero__image', { scale: 1.08 }, { scale: 1, duration: 1.8, ease: 'power2.out' });
+    gsap.fromTo(
+      ['.hero__copy > *', '.hero__meta', '.scroll-cue'],
+      { autoAlpha: 0, y: 28 },
+      { autoAlpha: 1, y: 0, duration: 0.75, stagger: 0.09, ease: 'power2.out', delay: 0.45 },
+    );
+  };
+
+  // Snap the veil on while the picture is still white, not after it is gone.
+  film.addEventListener('timeupdate', () => {
+    if (film.duration && film.currentTime >= film.duration - 0.3) handOff();
+  });
+  film.addEventListener('ended', handOff);
+  film.addEventListener('error', handOff);
+  // A stalled decode must not leave the gate hanging.
+  const guard = window.setTimeout(handOff, 9000);
+  film.addEventListener('ended', () => window.clearTimeout(guard));
+
+  const played = film.play();
+  if (played?.catch) played.catch(handOff);
+
+  gsap.to('.opener__content', { autoAlpha: 0, y: -28, duration: 0.5, ease: 'power2.in' });
+  gsap.to('.opener__hint', { autoAlpha: 0, y: 14, duration: 0.35, ease: 'power2.in' });
+  gsap.to('.opener__ground', { autoAlpha: 0, duration: 0.5, ease: 'power2.in' });
+  // Frame 0 is the same painting the panels carry, so a short crossfade is
+  // enough to absorb any codec-level difference at the cut-in.
+  gsap.to(film, { opacity: 1, duration: 0.3, ease: 'none' });
+
+  return true;
 }
 
 openButton?.addEventListener('click', revealInvitation);

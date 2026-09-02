@@ -380,8 +380,8 @@ i {
   position: absolute;
   z-index: -3;
   inset: 0;
-  background-image: url('/assets/nikkah-hero.webp');
-  background-position: center 52%;
+  background: var(--olive);
+  background-image: radial-gradient(circle at 50% 38%, #3a4a34 0%, var(--olive) 48%, #161d15 100%);
 }
 
 .hero__veil {
@@ -389,8 +389,8 @@ i {
   z-index: -2;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(24, 28, 23, 0.38), transparent 35%),
-    linear-gradient(0deg, rgba(21, 26, 21, 0.84), rgba(21, 26, 21, 0.04) 58%);
+    linear-gradient(180deg, rgba(24, 28, 23, 0.22), transparent 34%),
+    linear-gradient(0deg, rgba(21, 26, 21, 0.72), rgba(21, 26, 21, 0) 56%);
 }
 
 .hero::after {
@@ -794,9 +794,8 @@ h2 em {
 }
 
 .portrait-story__image {
-  min-height: min(72svh, 780px);
-  background-image: url('/assets/nikkah-portrait.webp');
-  background-position: right center;
+  min-height: min(38svh, 380px);
+  background: var(--paper);
 }
 
 .portrait-story figcaption {
@@ -1296,7 +1295,9 @@ h2 em {
   .opener__monogram {
     width: 5.7rem;
     height: 5.7rem;
-    margin-block: 1rem;
+    /* Bottom margin pulled in 20px: this is what lifts the name and the
+       occasion line together, off the gold door handles below. */
+    margin-block: 1rem -0.25rem;
   }
 
   .opener h1 {
@@ -1305,7 +1306,10 @@ h2 em {
 
   .opener__occasion {
     max-width: 20rem;
-    margin-block: 1rem 1.25rem;
+    /* Rides 20px up with the name above it; the extra bottom margin absorbs
+       that 20px so the seal button and the date below stay exactly where
+       they were. */
+    margin-block: 1rem 2.5rem;
   }
 
   .seal-button {
@@ -1452,7 +1456,7 @@ h2 em {
 
   .portrait-story__image {
     min-height: 64svh;
-    background-position: right center;
+    background-position: center;
   }
 
   .programme__list {
@@ -1736,4 +1740,254 @@ h2 em {
     max-width: 90%;
     font-size: 0.7rem;
   }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Illustration layer — the quietest of the five skins.
+   Thin strokes, champagne and gold, restraint over ornament.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --motif-stroke: var(--gold);
+  --motif-accent: var(--sage);
+  --motif-weight: 1.1;
+}
+
+.motif { display: block; width: 100%; height: 100%; overflow: visible; }
+[data-motif] { line-height: 0; }
+.motif-video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.opener__ground {
+  position: absolute; inset: 0; z-index: 0;
+  --motif-stroke: var(--champagne); --motif-weight: .85;
+  opacity: .5;
+}
+.opener__ground .motif { width: 100%; height: 100%; }
+
+/* ── The painted gate ──────────────────────────────────────────────────
+   Both panels carry the same 100vw x 100% cover box, offset so they
+   resolve to identical screen pixels — the split then falls exactly on
+   the seam between the two doors, which is why the still was composed
+   with that seam on the centre line. */
+.opener__panel .opener__art {
+  position: absolute; top: 0; z-index: 0;
+  width: 100vw; max-width: none; height: 100%;
+  object-fit: cover; object-position: 50% 50%;
+  pointer-events: none; user-select: none;
+}
+.opener__panel--left .opener__art { left: 0; }
+.opener__panel--right .opener__art { right: 0; }
+/* The photograph is the ground now; the panel's own gradient would only
+   tint it. The corner rules stay. */
+.opener__panel { background-image: none; }
+/* The fine grid veiled the flat panels; over a photograph it just dirties
+   it, and it is a direct child of .opener so it never leaves with them. */
+.opener__ground { opacity: .12; mix-blend-mode: soft-light; }
+.opener__content { position: relative; z-index: 2; }
+
+.hero__image { --motif-stroke: var(--champagne); --motif-weight: .85; overflow: hidden; }
+.hero__image .motif { width: 100%; height: 100%; opacity: .3; }
+
+/* The nikkah nama, drawn on scroll. */
+.ceremony__image {
+  position: relative;
+  --motif-stroke: var(--gold); --motif-accent: var(--sage); --motif-weight: 1.3;
+}
+.ceremony__image .motif { position: absolute; inset: 12%; width: auto; height: auto; }
+
+/* The still life goes back in as a background image, the way this site's other
+   photographs are set (.ceremony__image, .venue__image) — the jasmine drawing
+   was only ever standing in for the portrait that was pulled. Centred, because
+   the subject sits in the middle third so the mobile crop keeps it. */
+.portrait-story__image {
+  background-image: url('/assets/nikkah-stilllife.webp');
+  background-position: center;
+  /* background-size must be restated: the `background: var(--paper)` shorthand
+     further up resets it to auto, so the cover set alongside .ceremony__image
+     never survives to here. Without this the photo renders at its native
+     2752px inside a 780px box. */
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* Diyas inside the arch the venue frame already cuts. */
+.venue__image {
+  --motif-stroke: var(--ivory); --motif-accent: var(--gold-light); --motif-weight: 1.3;
+}
+.venue__image .motif {
+  position: absolute; right: 12%; bottom: 14%; left: 12%;
+  width: auto; height: min(26vh, 220px);
+  opacity: .9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-draw], [data-draw] * { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; }
+}
+
+
+/* Restored photography — the signing still life and the courtyard. Both are
+   details and places, no faces; the hero and portrait stay illustrated. */
+.ceremony__image, .venue__image { background-size: cover; background-repeat: no-repeat; }
+
+/* ── The opening film ──────────────────────────────────────────────────
+   Sits above the panels and the ground veil, below the copy, so the type
+   fades off over the moving picture rather than being wiped by it. */
+.opener__film {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* The white handoff. Fixed and outside .opener: the film ends on flat
+   white, this holds that exact value while the opener is torn down, then
+   fades off to reveal the hero. Without it the white last frame cuts
+   straight to dark forest green. */
+.gate-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+  display: none;
+}
+
+/* ── The venue arch on narrow screens ──────────────────────────────────
+   nikkah-venue.webp is 864x1821, ratio 0.47. It is the portrait crop that
+   was made for this arch and it had never been wired, so the arch was
+   cover-cropping the 1.50 landscape instead and showing a narrow vertical
+   slice of its middle. Same picture, correct frame. */
+@media (max-width: 760px) {
+  .venue__image {
+    background-image:
+      linear-gradient(180deg, rgba(38, 49, 40, 0.03), rgba(38, 49, 40, 0.14)),
+      url('/assets/nikkah-venue.webp');
+  }
+}
+
+/* ── Attire ────────────────────────────────────────────────────────────
+   This section was carrying itself on a colour swatch row alone. The
+   garment study takes the right column outright and the copy and swatches
+   stack down the left, rather than the swatches sitting opposite nothing.
+   High-key ivory against the olive ground is the whole point of the frame. */
+.attire__copy, .attire .swatches { grid-column: 1; }
+.attire__plate {
+  grid-column: 2;
+  grid-row: 1 / -1;
+  align-self: center;
+  margin: 0;
+  padding: clamp(0.6rem, 1.1vw, 0.9rem);
+  background: var(--paper);
+  box-shadow: 0 1.25rem 3.5rem rgba(22, 29, 21, 0.28);
+}
+.attire__plate img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+@media (max-width: 860px) {
+  .attire { grid-template-columns: 1fr; }
+  .attire__plate { grid-column: 1; grid-row: auto; }
+}
+
+/* ── Hero ──────────────────────────────────────────────────────────────
+   The colonnade replaces a flat olive radial gradient. The scrim is warm
+   olive rather than neutral black so the marble stays ivory rather than
+   going grey, and it is weighted to the foot of the frame because that is
+   where .hero__copy sits. Values below are measured, not guessed: see the
+   contrast pass in DECISIONS. */
+.hero__image {
+  background-image:
+    linear-gradient(180deg, rgba(30, 37, 28, 0.40) 0%, rgba(26, 33, 25, 0.50) 45%, rgba(20, 26, 19, 0.72) 100%),
+    url('/assets/nikkah-colonnade.webp');
+  background-position: center;
+  background-size: cover;
+}
+
+/* ============================================================
+   THE DATE, AS A DATELINE
+   Same rebuild as the editorial site, adapted to two things
+   that are true here and were not true there.
+
+   One: .ceremony__card already carries a double rule, a gold
+   border plus an inset outline. The stage's own 1px border made
+   a third concentric rectangle inside those two. The ivory fill
+   already separates the scratch panel from the paper card, so
+   the border goes and the fill does the work alone.
+
+   Two: gold on ivory measures 3.07:1. That clears the 3:1 bar
+   for the numerals, which are large display type, but nothing
+   small can be gold here. The caption is charcoal, and the
+   separators are held at 24px or more so the large-text bar is
+   the one that applies to them too.
+   ============================================================ */
+.date-scratch--nikkah .date-scratch__stage {
+  min-height: clamp(8.5rem, 13vw, 11rem);
+  padding: clamp(1.1rem, 2.6vw, 1.7rem);
+  border: 0;
+}
+.date-scratch--nikkah .date-scratch__value {
+  display: grid;
+  /* An explicit track, or the rule below sizes itself to the numerals
+     instead of to the panel. */
+  grid-template-columns: 1fr;
+  justify-items: start;
+  justify-content: start;
+  gap: clamp(0.65rem, 1.6vw, 1rem);
+  width: 100%;
+  padding: 0;
+}
+.date-scratch--nikkah .date-scratch__numerals {
+  display: flex;
+  align-items: center;
+  /* Grouped, not spread. justify-content:space-between across the full
+     panel width is what stranded the separators in the gaps. */
+  justify-content: flex-start;
+  gap: clamp(0.4rem, 1.4vw, 0.9rem);
+  color: var(--gold);
+  font-family: var(--serif);
+  font-size: clamp(3.4rem, 6vw, 5.6rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+}
+/* Held above 24px at every breakpoint on purpose: at 3.07:1 gold only
+   passes as large text, and an em fraction of the numerals would drop it
+   under that on a narrow screen. */
+.date-scratch--nikkah .date-scratch__numerals i {
+  color: var(--gold);
+  font-size: clamp(1.6rem, 2.1vw, 2rem);
+  font-style: normal;
+  transform: translateY(-0.15em);
+}
+.date-scratch--nikkah .date-scratch__rule {
+  width: 100%;
+  height: 1px;
+  background: var(--line);
+}
+.date-scratch--nikkah .date-scratch__caption {
+  color: var(--charcoal);
+  font-family: var(--sans);
+  font-size: clamp(0.62rem, 0.58rem + 0.15vw, 0.74rem);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+@media (max-width: 760px) {
+  .date-scratch--nikkah .date-scratch__stage { min-height: 8rem; }
+  /* Filling the panel: at 15vw the numerals covered two thirds of it and the
+     right side read as a hole, the same fault the editorial dateline had. */
+  .date-scratch--nikkah .date-scratch__numerals { font-size: clamp(3rem, 19vw, 4.6rem); }
 }

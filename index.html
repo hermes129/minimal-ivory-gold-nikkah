@@ -5,25 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="The nikkah invitation of Noor and Zayn — 17 October 2026 in Karachi."
+      content="The nikkah invitation of Noor and Zayn / 17 October 2026 in Karachi."
     />
     <meta name="theme-color" content="#f5efe3" />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-    <title>Noor &amp; Zayn — The Nikkah</title>
+    <title>Noor &amp; Zayn / The Nikkah</title>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to invitation</a>
 
     <div class="opener" id="opener" aria-label="Wedding invitation cover">
       <div class="opener__panel opener__panel--left" aria-hidden="true">
+        <img class="opener__art" src="/assets/gate-nikkah.webp" alt="">
         <span class="opener__corner opener__corner--top"></span>
         <span class="opener__corner opener__corner--bottom"></span>
       </div>
       <div class="opener__panel opener__panel--right" aria-hidden="true">
+        <img class="opener__art" src="/assets/gate-nikkah.webp" alt="">
         <span class="opener__corner opener__corner--top"></span>
         <span class="opener__corner opener__corner--bottom"></span>
       </div>
 
+      <!-- The opening film. Frame 0 is the same painting the panels carry, so
+           it cuts in invisibly; it ends on flat white, which .gate-veil then
+           takes over at the same value. Portrait viewports only. The source
+           is 9:16 and a cover-crop on a wide screen would throw the doors
+           off frame. Landscape keeps the parting-panel gate. -->
+      <video
+        class="opener__film"
+        id="opener-film"
+        playsinline
+        muted
+        preload="auto"
+        aria-hidden="true"
+      >
+        <source src="/assets/gate-open.webm" type="video/webm" />
+        <source src="/assets/gate-open.mp4" type="video/mp4" />
+      </video>
+
+      <div class="opener__ground" data-motif="fineGridTile" data-motif-id="gate" aria-hidden="true"></div>
       <div class="opener__content">
         <p class="eyebrow">Together with their families</p>
         <div class="opener__monogram" aria-hidden="true">
@@ -46,9 +66,14 @@
       <p class="opener__hint">A quiet beginning, wrapped in gold</p>
     </div>
 
+    <!-- Sits outside .opener on purpose: it must still be painting white
+         after the opener is hidden, otherwise the film's white last frame
+         cuts straight to the dark hero. -->
+    <div class="gate-veil" id="gate-veil" aria-hidden="true"></div>
+
     <main id="main-content" tabindex="-1">
       <section class="hero" aria-labelledby="hero-title">
-        <div class="hero__image" role="img" aria-label="Pakistani couple in ivory nikkah attire in a heritage courtyard"></div>
+        <div class="hero__image" data-motif="fineGridTile" data-motif-id="hero" aria-hidden="true"></div>
         <div class="hero__veil" aria-hidden="true"></div>
         <div class="hero__meta hero__meta--place">Karachi, Pakistan</div>
         <div class="hero__meta hero__meta--date">Saturday · 17 October 2026</div>
@@ -105,11 +130,15 @@
       <section class="ceremony" aria-labelledby="ceremony-title">
         <div class="ceremony__image image-parallax" role="img" aria-label="Nikkah signing details with jasmine and a Quran"></div>
         <div class="ceremony__card reveal">
-          <p class="section-kicker">02 — The nikkah</p>
+          <p class="section-kicker">The ceremony</p>
           <h2 id="ceremony-title">The <em>nikkah.</em></h2>
           <div class="date-scratch date-scratch--nikkah" data-date-scratch data-scratch-key="nikkah-wedding-date" data-scratch-cover="#a8833d" data-scratch-accent="#f7f2e8">
             <div class="date-scratch__stage">
-              <div class="date-scratch__value" tabindex="-1" aria-label="Nikkah date: 17 October 2026"><span>17</span><i>·</i><span>10</span><i>·</i><span>26</span></div>
+              <div class="date-scratch__value" tabindex="-1" aria-label="Nikkah date: Saturday 17 October 2026, Karachi">
+                <span class="date-scratch__numerals"><span>17</span><i>·</i><span>10</span><i>·</i><span>26</span></span>
+                <span class="date-scratch__rule" aria-hidden="true"></span>
+                <span class="date-scratch__caption">Saturday, October 2026 / Karachi</span>
+              </div>
               <canvas class="date-scratch__canvas" aria-hidden="true"></canvas>
               <p class="date-scratch__hint" aria-hidden="true">Scratch to reveal</p>
             </div>
@@ -146,7 +175,7 @@
 
       <section class="portrait-story" aria-labelledby="story-title">
         <div class="portrait-story__copy reveal">
-          <p class="section-kicker">03 — Our beginning</p>
+          <p class="section-kicker">Our beginning</p>
           <h2 id="story-title">A quiet kind<br />of <em>forever.</em></h2>
           <p>
             Some beginnings arrive softly: a shared prayer, a room full of family,
@@ -154,7 +183,8 @@
           </p>
         </div>
         <figure class="portrait-story__figure reveal">
-          <div class="portrait-story__image image-parallax" role="img" aria-label="Newlywed Pakistani couple seated together after their nikkah"></div>
+          <div class="portrait-story__image" role="img"
+               aria-label="A folded ivory dupatta with a gold gota border on a sunlit marble ledge, beside a brass bowl of jasmine"></div>
           <figcaption>After the vows, before the world rushes back in.</figcaption>
         </figure>
       </section>
@@ -165,7 +195,7 @@
           <p>The afternoon</p>
         </div>
         <div class="programme__heading reveal">
-          <h2 id="programme-title">The day,<br /><em>gently unfolding.</em></h2>
+          <h2 id="programme-title">The day, gently unfolding.</h2>
           <p>Come as family. Leave with another memory held close.</p>
         </div>
         <ol class="programme__list">
@@ -190,7 +220,7 @@
 
       <section class="attire" aria-labelledby="attire-title">
         <div class="attire__copy reveal">
-          <p class="section-kicker">05 — A note on attire</p>
+          <p class="section-kicker">A note on attire</p>
           <h2 id="attire-title">Soft tones.<br /><em>Golden details.</em></h2>
           <p>
             We invite you to dress in formal Pakistani attire, guided by a palette of warm,
@@ -204,12 +234,15 @@
           <span style="--swatch:#8b9075">Sage</span>
           <span style="--swatch:#263128">Deep olive</span>
         </div>
+        <figure class="attire__plate reveal">
+          <img src="/assets/nikkah-attire.webp" alt="An ivory raw-silk sherwani and a gold-embroidered dupatta laid out together, a sprig of jasmine resting on the fabric" loading="lazy" />
+        </figure>
       </section>
 
       <section class="venue section-shell" aria-labelledby="venue-title">
         <div class="venue__card reveal">
-          <p class="section-kicker">06 — The place</p>
-          <h2 id="venue-title">The<br /><em>Courtyard.</em></h2>
+          
+          <h2 id="venue-title">The Courtyard.</h2>
           <p class="venue__address">
             Beach Luxury Hotel<br />
             M. T. Khan Road, Karachi
@@ -234,7 +267,7 @@
       </section>
 
       <section class="countdown" aria-labelledby="countdown-title">
-        <p class="section-kicker reveal">07 — Counting the days</p>
+        
         <h2 id="countdown-title" class="reveal">Until we say<br /><em>qubool hai.</em></h2>
         <div class="countdown__grid reveal" aria-live="polite">
           <div><strong id="days">00</strong><span>Days</span></div>
@@ -247,8 +280,8 @@
       <section class="rsvp section-shell" aria-labelledby="rsvp-title">
         <div class="rsvp__mark reveal" aria-hidden="true">ن × ز</div>
         <div class="rsvp__copy reveal">
-          <p class="section-kicker">08 — Kindly reply</p>
-          <h2 id="rsvp-title">Will you<br /><em>join us?</em></h2>
+          
+          <h2 id="rsvp-title">Will you join us?</h2>
           <p>
             Your presence and your duas would mean more to us than any gift.
             Please respond by 15 September.
