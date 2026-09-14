@@ -1248,7 +1248,8 @@ h2 em {
 @media (max-width: 760px) {
   :root {
     --page-gutter: 1.25rem;
-    --section-space: 4.5rem;
+    /* Measured at 390x844: 163-193px between sections. */
+    --section-space: 3.25rem;
   }
 
   body {
@@ -1408,6 +1409,7 @@ h2 em {
   .ceremony__card {
     width: calc(100% - 2rem);
     margin-top: -4rem;
+    margin-bottom: 1.5rem; /* 3rem stacked on the verse padding before it */
     padding: 2.4rem 1.5rem;
   }
 
@@ -1429,7 +1431,7 @@ h2 em {
   .verse {
     min-height: auto;
     grid-template-columns: 1fr;
-    padding-block: 5.5rem;
+    padding-block: 3.5rem;
     text-align: center;
   }
 
